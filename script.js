@@ -1,23 +1,37 @@
-const images = document.querySelectorAll(".image");
+const dragSource = document.querySelectorAll(".container>*");
+
 var source = null;
 var sourceElement = null;
-images.forEach((image) => {
-  image.addEventListener("dragstart", (e) => {
-    console.log("get the source");
-    console.log(getComputedStyle(e.target).backgroundImage);
-    source = getComputedStyle(e.target).backgroundImage;
-    sourceElement = e.target;
+
+dragSource.forEach((element) => {
+  element.addEventListener("dragstart", (e) => {
+    sourceElement = e.target; //soucrce ele
+    source = e.target.src; // source img
+    console.log(e.target.parentElement);
+    console.log(e.target.src);
   });
 
-  image.addEventListener("dragover", (e) => {
+  element.addEventListener("dragover", (e) => {
     e.preventDefault();
+    console.log("dragover start");
   });
-  image.addEventListener("drop", (e) => {
+
+  element.addEventListener("drop", (e) => {
     e.preventDefault();
     console.log("drop");
-    sourceElement.style.backgroundImage = getComputedStyle(
-      e.target
-    ).backgroundImage;
-    e.target.style.backgroundImage = source;
+    const targetElement = e.target.parentElement;
+    const targetImageSrc = e.target.src;
+    e.target.src = source;
+    sourceElement.src = targetImageSrc;
+
+    console.log(e.target.parentElement);
+    console.log();
+    [
+      sourceElement.parentElement.children[0].textContent,
+      e.target.parentElement.children[0].textContent,
+    ] = [
+      e.target.parentElement.children[0].textContent,
+      sourceElement.parentElement.children[0].textContent,
+    ];
   });
 });
